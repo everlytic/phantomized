@@ -1,12 +1,12 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 MAINTAINER Gravebot
 
 # Setup system deps
 RUN apt-get update
-RUN apt-get -y install build-essential curl rsync tar python python-pip git libfontconfig1
+RUN apt-get -y install build-essential curl rsync tar python3 python3-pip git libfontconfig1
 
 # Setup Node
-ENV NODE_VERSION 4.4.2
+ENV NODE_VERSION 4.9.1
 ENV NPM_VERSION 3.8.5
 
 RUN git clone https://github.com/creationix/nvm.git /.nvm
@@ -15,7 +15,8 @@ RUN /bin/bash -c 'source /.nvm/nvm.sh && nvm install $NODE_VERSION && nvm use $N
 RUN npm install -g npm@$NPM_VERSION
 
 # Setup dockerize
-RUN pip install dockerize
+RUN python3 -m pip install --upgrade pip
+RUN pip3 install git+https://github.com/larsks/dockerize
 
 # Copy package.json
 COPY ./package.json /app/
